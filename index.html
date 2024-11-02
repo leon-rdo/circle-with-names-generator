@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerador de Círculo com Nome</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <style>
+        @font-face {
+            font-family: 'Ananda';
+            src: url('./Ananda.ttf') format('truetype');
+        }
+
+        #image-container {
+            position: relative;
+            width: 500px;
+            height: 500px;
+            overflow: hidden;
+            border-radius: 50%;
+            border: 2px solid #4A131A;
+            padding: 0;
+        }
+
+        #image-container img {
+            width: 100%;
+        }
+
+        #image-container figcaption {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 3em;
+            font-weight: bold;
+            color: #981222;
+            font-family: 'Ananda', sans-serif;
+            text-wrap: nowrap;
+            margin: 0 auto;
+        }
+    </style>
+</head>
+
+<body class="bg-secondary-subtle">
+    <div class="container px-5 py-3">
+        <div class="row text-center">
+
+            <h1 class="mb-4">Gerador de Imagem com Nomes</h1>
+
+            <div class="col-12" style="overflow-x: auto;">
+                <figure id="image-container" class="mx-auto mb-4">
+                    <img src="./Círculo com Flores.png" alt="Círculo com Flores" class="img-fluid">
+                    <figcaption>Nome</figcaption>
+                </figure>
+            </div>            
+
+            <div class="col-12">
+                <div class="mb-3">
+                    <textarea id="names-input" class="form-control" rows="5" placeholder="Digite os nomes, um por linha"></textarea>
+                </div>
+                <button class="btn btn-primary" onclick="downloadAllImages()">Baixar Todas Imagens</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script>
+        function downloadAllImages() {
+            const names = document.getElementById('names-input').value.split('\n');
+            names.forEach((name, index) => {
+                setTimeout(() => {
+                    document.querySelector('#image-container figcaption').textContent = name.trim();
+                    html2canvas(document.querySelector('#image-container')).then(canvas => {
+                        const link = document.createElement('a');
+                        link.href = canvas.toDataURL('image/jpeg');
+                        link.download = `${name.trim()}.jpg`;
+                        link.click();
+                    });
+                }, index * 1000);
+            });
+        }
+    </script>
+</body>
+
+</html>
